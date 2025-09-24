@@ -1,0 +1,86 @@
+{% extends 'master.html' %}
+
+{% block title %}Review Baskets{% endblock %}
+
+{% block content %}
+<h2>Pending Basket Reviews</h2>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+        <li class="breadcrumb-item active">Basket Reviews</li>
+    </ol>
+</nav>
+
+{% if baskets %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-borderless align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Basket</th>
+                    <th>Customer</th>
+                    <th>Items</th>
+                    <th>Total Amount</th>
+                    <th>Created</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {% for basket in baskets %}
+                    <tr>
+                        <td>#{{ basket.id }}</td>
+                        <td>{{ basket.customer.get_full_name|default:basket.customer.username }}</td>
+                        <td>{{ basket.get_total_items }} items</td>
+                        <td>${{ basket.get_total_price }}</td>
+                        <td>{{ basket.created_date|date:"M d, Y g:i A" }}</td>
+                        <td>{{ basket.get_status_display }}</td>
+                        <td>
+                            <a href="{% url 'review-basket' basket.id %}" class="btn btn-sm">Review</a>
+                            <a href="{% url 'customer-detail' basket.customer.pk %}" class="btn btn-sm">Customer</a>
+                        </td>
+                    </tr>
+                    <tr class="collapse" id="basket-details-{{ basket.id }}">
+                        <td colspan="7">
+                            <div class="mt-2">
+                                <h6>Items in this basket:</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>ID</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in basket.basket_items.all %}
+                                                <tr>
+                                                    <td>{{ item.product.name }}</td>
+                                                    <td>{{ item.product.product_id }}</td>
+                                                    <td>${{ item.product.price }}</td>
+                                                    <td>{{ item.quantity }}</td>
+                                                    <td>${{ item.get_total_price }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% else %}
+    <h4>No Pending Baskets</h4>
+    <div class="mt-3">
+        <a href="{% url 'staff-customers' %}" class="btn">Search Customers</a>
+    </div>
+{% endif %}
+
+{% endblock %}
