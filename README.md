@@ -217,27 +217,9 @@ grocery_store/
 - Responsive design for mobile and desktop
 - Role-based view access control
 
-## Future Enhancements
-
-- Payment integration
-- Inventory management
-- Product categories
-- Search functionality
-- Email notifications
-- Reporting dashboard
-- API endpoints
-
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
 4. Submit a pull request
-
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## Contact
-
-For questions or support, please contact the development team.
